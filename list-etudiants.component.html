@@ -1,0 +1,94 @@
+<div class="container mt-4">
+    <h2 class="text-center">Liste des Etudiants</h2>
+    <div class="search-container">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Search students..."
+          class="form-control"
+        />
+        <button (click)="searchStudents()" class="btn btn-outline-primary sm-4">Search</button>
+      </div>
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Date de Naissance</th>
+                <th>Filière</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let etudiant of etudiants,let i=index">
+                <ng-container *ngIf="!editableRows[i]">
+                <td>{{etudiant.id}}</td>
+                <td>{{etudiant.nom}}</td>
+                <td>{{etudiant.prenom}}</td>
+                <td>{{etudiant.email}}</td>
+                <td>{{etudiant.tel}}</td>
+                <td>{{etudiant.date_naissance}}</td>
+                <td>{{etudiant.filiere}}</td>
+                <td>
+                    <button class="btn btn-success btn-sm" (click)="enableEditMode(i)">
+                        Modifier
+                    </button>
+                </td>
+                    
+                    <td>
+                        <button class="btn btn-danger btn-sm" (click)="deleteEtudiant(etudiant.id)">
+                            Supprimer
+                        </button>
+                    </td>
+                   
+               
+            </ng-container>
+            <ng-container *ngIf="editableRows[i]">
+                <td>{{etudiant.id}}</td>
+                <td>
+                    <input type="text" class="form-control" [(ngModel)]="editableEtudiants[i].nom"/>
+                </td>
+                <td>
+                    <input type="text" class="form-control" [(ngModel)]="editableEtudiants[i].prenom">
+                </td>
+                <td>
+                    <input type="text" class="form-control" [(ngModel)]="editableEtudiants[i].email">
+                </td>
+                <td>
+                    <input type="text" class="form-control" [(ngModel)]="editableEtudiants[i].tel">
+                </td>
+                <td>
+                    <input type="text" class="form-control" [(ngModel)]="editableEtudiants[i].date_naissance">
+                </td>
+                <td>
+                    <input type="text" class="form-control" [(ngModel)]="editableEtudiants[i].filiere">
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-sm" (click)="saveChange(i, etudiant.id)">Enregistrer</button>
+                </td>
+                <td>
+                    <button class="btn btn-secondary btn-sm" (click)="cancelEditMode(i)">Annuler</button>
+                </td>
+            </ng-container>
+            </tr>
+        </tbody>
+        </table>
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item"
+                [class.disabled]="currentPage === 1"
+                (click)="prevPage()">
+                <a href="" class="page-link">Précédent</a>
+    
+                </li>
+                <li class="page-item"
+                [class.disabled]="currentPage === totalPages"
+                (click)="nextPage()">
+            <a href="" class="page-link">Suivant</a></li>
+            </ul>
+        </nav>
+    </div>
+
